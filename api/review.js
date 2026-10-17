@@ -116,6 +116,12 @@ No uses porcentajes de seguridad.
 Respeta las prioridades del comprador y su decisión final.
 Usa el total calculado por el servidor; si es null, falta el envío.
 Distingue riesgo condicional de pérdida confirmada.
+La falla mencionada es una preocupación del comprador, no evidencia
+de un defecto ni una predicción de que ocurrirá.
+No atribuyas probabilidades, causas o plazos de falla sin evidencia.
+Formula el riesgo así: si ocurriera la falla que preocupa al comprador,
+su cobertura sigue sin confirmarse.
+Describe las promesas de la política como anunciadas, no garantizadas.
 
 Organiza la respuesta con estos títulos:
 QUÉ DICE EL TEXTO
@@ -127,7 +133,7 @@ Si no hay base para una conclusión, dilo.
 No ordenes comprar ni afirmes haber enviado mensajes.
 `;
 
-  const model = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+  const model = process.env.GEMINI_MODEL || "gemini-3.5-flash-lite";
 
   if (!/^[a-zA-Z0-9._-]+$/.test(model)) {
     return res.status(503).json({
