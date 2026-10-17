@@ -19,3 +19,11 @@ Updated the default model to gemini-3.5-flash-lite.
 
 ## Retest
 Pending on the corrected production deployment.
+
+## Production retest — passed for this case
+The corrected live response stated:
+"If the failure that concerns the buyer occurred, coverage remains
+unconfirmed."
+It treated the failure as a buyer concern rather than a prediction.
+It described free returns as advertised and kept policy conditions unknown.
+This verifies one fictional case, not every possible model response.
