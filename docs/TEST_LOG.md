@@ -43,3 +43,25 @@ Two wording issues:
 Changed wording to describe insufficient input evidence and an
 entered, unverified return-cost amount.
 Retest on the corrected deployment remains pending.
+
+## Synthetic persona retest — completed
+Sofia understood the revised coverage and return-cost wording.
+She distinguished missing coverage from confirmed exclusion,
+and entered return cost from guaranteed claim acceptance.
+
+She understood that the page reported copying questions and
+recording an intention, without sending messages or purchasing.
+External clipboard contents were not independently checked.
+
+She understood Gemini as optional interpretation, not new seller
+evidence. The visible response did not guarantee coverage,
+verify the retailer or predict strap failure.
+
+Remaining minor friction:
+"Total calculated by the server" sounded technical.
+"Real AI response" could sound authoritative, although the
+independent-verification warning remained visible.
+
+Final stated decision: ask for clarification before buying.
+Seller conditions, responsible party and refund scope remain unknown.
+This is synthetic screenshot feedback, not observed buyer behavior.
