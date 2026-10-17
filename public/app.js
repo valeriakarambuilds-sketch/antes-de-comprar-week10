@@ -381,3 +381,127 @@ $("reset-form").addEventListener("click", () => {
   $("form-error").textContent = "";
   $("product").focus();
 });
+// Optional AI review, separate from the local calculations.
+const aiPanel = document.createElement("section");
+const aiHeading = document.createElement("h3");
+aiHeading.textContent = "Una segunda lectura con IA";
+
+const aiNotice = document.createElement("p");
+aiNotice.className = "small";
+aiNotice.textContent =
+  "Al pulsar, se enviarán a Gemini el producto, uso, preocupación, " +
+  "política y montos capturados. Usa solo datos ficticios en esta demo. " +
+  "La respuesta puede equivocarse y no verifica la tienda.";
+
+const aiButton = document.createElement("button");
+aiButton.type = "button";
+aiButton.className = "secondary";
+aiButton.textContent = "Consultar con Gemini";
+
+const aiOutput = document.createElement("p");
+aiOutput.style.whiteSpace = "pre-wrap";
+aiOutput.style.fontSize = "13px";
+aiOutput.setAttribute("role", "status");
+
+aiPanel.append(aiHeading, aiNotice, aiButton, aiOutput);
+$("review-result").append(aiPanel);
+
+let aiRequest = null;
+let aiVersion = 0;
+
+function clearAI() {
+  aiVersion += 1;
+  if (aiRequest) aiRequest.abort();
+  aiRequest = null;
+  aiOutput.textContent = "";
+  aiButton.disabled = false;
+  aiButton.textContent = "Consultar con Gemini";
+}
+
+form.addEventListener("input", clearAI);
+form.addEventListener("submit", clearAI);
+$("load-example").addEventListener("click", clearAI);
+$("reset-form").addEventListener("click", clearAI);
+
+aiButton.addEventListener("click", async () => {
+  if (!currentReview) return;
+
+  if (!$("fictional").checked) {
+    aiOutput.textContent =
+      "Esta demo solo envía casos ficticios. Usa el ejemplo o introduce " +
+      "datos inventados y marca la casilla correspondiente.";
+    return;
+  }
+
+  if (location.protocol === "file:") {
+    aiOutput.textContent =
+      "La IA funciona desde la página publicada en Vercel. " +
+      "Este archivo local solo ejecuta los cálculos.";
+    return;
+  }
+
+  clearAI();
+  const version = aiVersion;
+  const controller = new AbortController();
+  aiRequest = controller;
+
+  const timeout = setTimeout(() => controller.abort(), 25000);
+
+  aiButton.disabled = true;
+  aiButton.textContent = "Consultando…";
+  aiOutput.textContent = "Esperando respuesta del modelo real…";
+
+  try {
+    const response = await fetch("/api/review", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      signal: controller.signal,
+      body: JSON.stringify({
+        product: readText("product", 100, true),
+        use: readText("intended-use", 500, true),
+        concern: readText("concern", 250, true),
+        policy: readText("policy", 3000, true),
+        quote: readText("coverage-quote", 800),
+        budget: readMoney("budget"),
+        price: readMoney("price"),
+        shipping: readMoney("shipping", true),
+        returnCost: readMoney("return-cost", true),
+        returnLimit: readMoney("return-limit")
+      })
+    });
+
+    const result = await response.json();
+
+    if (version !== aiVersion) return;
+
+    if (!response.ok) {
+      throw new Error(result.error || "No se pudo consultar la IA.");
+    }
+
+    if (
+      result.simulated !== false ||
+      typeof result.analysis !== "string"
+    ) {
+      throw new Error("El servidor devolvió una respuesta inesperada.");
+    }
+
+    aiOutput.textContent =
+      "RESPUESTA DE IA REAL · " + result.model +
+      "\nNo verificada independientemente.\n\n" + result.analysis;
+  } catch (error) {
+    if (version !== aiVersion) return;
+
+    aiOutput.textContent =
+      error.name === "AbortError"
+        ? "La consulta tardó demasiado. Puedes volver a intentarlo."
+        : error.message;
+  } finally {
+    clearTimeout(timeout);
+
+    if (version === aiVersion) {
+      aiButton.disabled = false;
+      aiButton.textContent = "Consultar con Gemini";
+      aiRequest = null;
+    }
+  }
+});
