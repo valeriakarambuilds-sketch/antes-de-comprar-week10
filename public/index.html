@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description"
+        content="Revisa costos, condiciones y dudas antes de comprar.">
+  <title>Antes de comprar</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+
+<body>
+  <header class="header">
+    <a class="brand" href="#">Antes de comprar ↗</a>
+    <span class="badge">Prototipo académico</span>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="eyebrow">DEL LADO DEL COMPRADOR · MÉXICO</p>
+      <h1>Tu compra,<br><em>tus reglas.</em></h1>
+      <p class="intro">
+        Revisa tu presupuesto, lo que promete el anuncio
+        y lo que falta preguntar antes de pagar.
+      </p>
+      <button id="load-example" type="button">
+        Probar con una bolsa ficticia ↗
+      </button>
+      <p class="small">
+        Sin anuncios ni comisiones. La decisión sigue siendo tuya.
+      </p>
+    </section>
+
+    <section class="notice" aria-label="Límites del prototipo">
+      <strong>Primera versión: IA sin conectar.</strong>
+      <p>
+        El análisis asistido estará marcado como simulado hasta
+        conectar un modelo real. No verificamos tiendas ni
+        garantizamos calidad, cobertura o reembolsos.
+      </p>
+      <p>
+        No ingreses datos personales. En esta versión los campos
+        permanecen en la pestaña y no se guardan al recargar.
+      </p>
+    </section>
+
+    <section class="workspace">
+      <form id="purchase-form">
+        <fieldset>
+          <legend>01 · Tus prioridades</legend>
+
+          <label for="product">¿Qué quieres comprar?</label>
+          <input id="product" name="product" type="text"
+                 maxlength="100" required
+                 placeholder="Una bolsa para la escuela">
+
+          <div class="row">
+            <div>
+              <label for="budget">Presupuesto total · MXN</label>
+              <input id="budget" name="budget" type="number"
+                     min="0" max="1000000" step="0.01" required>
+            </div>
+            <div>
+              <label for="return-limit">
+                Máximo que pagarías por devolver · MXN
+              </label>
+              <input id="return-limit" name="returnLimit"
+                     type="number" min="0" max="1000000"
+                     step="0.01" required>
+            </div>
+          </div>
+
+          <label for="intended-use">¿Para qué lo necesitas?</label>
+          <textarea id="intended-use" name="intendedUse"
+                    rows="2" maxlength="500" required
+                    placeholder="Llevar una laptop y un libro"></textarea>
+
+          <label for="concern">¿Qué falla te preocupa?</label>
+          <input id="concern" name="concern" type="text"
+                 maxlength="250" required
+                 placeholder="Que el lazo se rompa después de usarla">
+
+          <label class="checkbox">
+            <input id="coverage-required" name="coverageRequired"
+                   type="checkbox" checked>
+            Necesito confirmar que esa falla esté cubierta.
+          </label>
+        </fieldset>
+
+        <fieldset>
+          <legend>02 · La información del anuncio</legend>
+
+          <div class="row">
+            <div>
+              <label for="price">Precio · MXN</label>
+              <input id="price" name="price" type="number"
+                     min="0" max="1000000" step="0.01" required>
+            </div>
+            <div>
+              <label for="shipping">Envío · MXN</label>
+              <input id="shipping" name="shipping" type="number"
+                     min="0" max="1000000" step="0.01"
+                     placeholder="Vacío = sin confirmar">
+            </div>
+          </div>
+
+          <label for="delivery">Entrega anunciada · opcional</label>
+          <input id="delivery" name="delivery" type="text"
+                 maxlength="150" placeholder="Entre 5 y 8 días">
+
+          <label for="policy">
+            Texto exacto de la política de devolución
+          </label>
+          <textarea id="policy" name="policy" rows="4"
+                    maxlength="3000" required
+                    placeholder="Copia las condiciones anunciadas"></textarea>
+
+          <label for="coverage">
+            Según ese texto, ¿tu falla está cubierta?
+          </label>
+          <select id="coverage" name="coverage">
+            <option value="unknown">No está confirmado</option>
+            <option value="yes">El texto la incluye</option>
+            <option value="no">El texto la excluye</option>
+          </select>
+
+          <label for="coverage-quote">
+            Frase que incluye o excluye la falla · si aplica
+          </label>
+          <textarea id="coverage-quote" name="coverageQuote"
+                    rows="2" maxlength="800"
+                    placeholder="Pega la frase que respalda tu selección"></textarea>
+
+          <label for="return-cost">Costo de devolución · MXN</label>
+          <input id="return-cost" name="returnCost" type="number"
+                 min="0" max="1000000" step="0.01"
+                 placeholder="Vacío = sin confirmar; 0 = gratis">
+
+          <label for="responsible">
+            ¿Quién atiende el reclamo? · opcional
+          </label>
+          <input id="responsible" name="responsible" type="text"
+                 maxlength="200" placeholder="Canal o responsable">
+
+          <label for="source">Fuente de la información</label>
+          <input id="source" name="source" type="text"
+                 maxlength="200" required
+                 placeholder="Captura del anuncio o página de condiciones">
+
+          <label for="source-date">Fecha de consulta</label>
+          <input id="source-date" name="sourceDate"
+                 type="date" required>
+
+          <label class="checkbox">
+            <input id="fictional" name="fictional" type="checkbox">
+            Estos datos son ficticios.
+          </label>
+        </fieldset>
+
+        <p id="form-error" role="alert"></p>
+
+        <div class="actions">
+          <button type="submit">Revisar con mis reglas →</button>
+          <button id="reset-form" type="button" class="secondary">
+            Borrar datos
+          </button>
+        </div>
+      </form>
+
+      <aside class="review-panel">
+        <div id="empty-state">
+          <p class="eyebrow">EVIDENCIA, NO PROMESAS</p>
+          <h2>Antes de decidir,<br>aclara lo importante.</h2>
+          <p>
+            Completa el formulario o prueba el caso ficticio.
+            Aquí aparecerán costos, dudas y preguntas.
+          </p>
+        </div>
+
+        <section id="review-result" hidden
+                 aria-labelledby="review-title">
+          <p id="case-label" class="eyebrow"></p>
+          <h2 id="review-title" tabindex="-1">Tu revisión</h2>
+          <p id="review-product"></p>
+          <p id="review-status" role="status"></p>
+
+          <div class="cost-summary">
+            <div>
+              <span>Total anunciado</span>
+              <strong id="total-cost"></strong>
+            </div>
+            <div>
+              <span>Tu presupuesto</span>
+              <strong id="budget-display"></strong>
+            </div>
+          </div>
+
+          <p id="financial-exposure" class="small"></p>
+
+          <h3>Lo que sabemos y lo que falta</h3>
+          <div id="findings"></div>
+
+          <details open>
+            <summary>Texto y fuente utilizados</summary>
+            <blockquote id="policy-display"></blockquote>
+            <p id="source-display" class="small"></p>
+            <p class="small">
+              Información aportada por ti; no verificada
+              independientemente.
+            </p>
+          </details>
+
+          <h3>Preguntas antes de pagar</h3>
+          <ol id="questions"></ol>
+          <button id="copy-questions" type="button" class="secondary">
+            Copiar preguntas
+          </button>
+          <p id="copy-status" role="status" class="small"></p>
+
+          <div class="decision">
+            <h3>El siguiente paso es tuyo</h3>
+            <p>
+              Estas opciones solo registran tu intención en la
+              pestaña. No envían mensajes ni realizan compras.
+            </p>
+            <div class="actions">
+              <button type="button" data-decision="ask">
+                Pedir aclaración
+              </button>
+              <button type="button" data-decision="wait">
+                Esperar
+              </button>
+              <button type="button" data-decision="continue">
+                Continuar por mi cuenta
+              </button>
+            </div>
+            <p id="decision-status" role="status"></p>
+          </div>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <footer>
+    Antes de comprar · Week 10 · Prototipo académico
+  </footer>
+</body>
+</html>
