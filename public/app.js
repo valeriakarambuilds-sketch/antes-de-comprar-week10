@@ -204,7 +204,7 @@ form.addEventListener("submit", (event) => {
     if (data.coverage === "unknown") {
       finding(
         "COBERTURA SIN CONFIRMAR",
-        `No confirmaste cobertura para esta falla: ${data.concern}. Un plazo de devolución no establece por sí solo que esté cubierta.`
+        `La información ingresada no confirma cobertura para esta falla: ${data.concern}. Un plazo de devolución no establece por sí solo que esté cubierta.`
       );
 
       questions.push(
@@ -234,8 +234,8 @@ form.addEventListener("submit", (event) => {
       );
     } else {
       finding(
-        "COSTO APORTADO POR TI",
-        `Devolver costaría ${money(data.returnCost)}. ${
+        "COSTO DE DEVOLUCIÓN INGRESADO · NO VERIFICADO",
+        `Según el monto ingresado, devolver costaría ${money(data.returnCost)}. ${
           data.returnCost > data.returnLimit
             ? `Supera tu límite de ${money(data.returnLimit)}.`
             : `Está dentro de tu límite de ${money(data.returnLimit)}.`

@@ -27,3 +27,19 @@ unconfirmed."
 It treated the failure as a buyer concern rather than a prediction.
 It described free returns as advertised and kept policy conditions unknown.
 This verifies one fictional case, not every possible model response.
+
+## Synthetic persona test — Sofía
+Fictional student, age 21, MXN 350 budget, unwilling to pay return shipping.
+Screenshot-based feedback; not a real-user interview.
+
+She understood the MXN 340 total, conditional financial exposure,
+unknown failure coverage and intention-only decision buttons.
+The missing example button was a screenshot omission, not an absent feature.
+
+Two wording issues:
+- "No confirmaste cobertura" sounded like buyer blame.
+- "Costo aportado por ti" could be misunderstood as money paid.
+
+Changed wording to describe insufficient input evidence and an
+entered, unverified return-cost amount.
+Retest on the corrected deployment remains pending.
